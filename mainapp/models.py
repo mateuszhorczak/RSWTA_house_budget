@@ -1,16 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-user_model = get_user_model
+user_model = get_user_model()
 
 
 # Create your models here.
 
-class Wallet:
+class Wallet(models.Model):
     name = models.TextField()
 
 
-class Category:
+class Category(models.Model):
     name = models.TextField()
     id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
 
