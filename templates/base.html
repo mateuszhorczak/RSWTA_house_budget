@@ -4,20 +4,19 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-        <!-- Here code link to our css and js -->
     </head>
     <body>
         <header>
             <nav>
                 <h2>Twoj budzet</h2>
                 <ul id="menu">
-                    <li><a href="#">Finanse</a></li>
-                    <li><a href="#">Portfele</a></li>
-                    <li><a href="#">Kategorie</a></li>
+                    <li><a href="{% url 'finances' %}">Finanse</a></li>
+                    <li><a href="{% url 'wallets' %}">Portfele</a></li>
+                    <li><a href="{% url 'categories' %}">Kategorie</a></li>
                 </ul>
             </nav>
             <div class="header-image">
-                <a href="#"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
+                <a href="{% url 'home' %}"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
             </div>
         </header>
         <main>

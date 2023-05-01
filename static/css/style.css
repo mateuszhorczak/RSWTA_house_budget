@@ -34,7 +34,7 @@ li {
     font-size: 24px;
 }
 
-li:hover, .header-image img:hover {
+header li:hover, .header-image img:hover {
     opacity: 0.5;
     transition: 0.3s;
 }

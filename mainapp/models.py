@@ -15,7 +15,7 @@ class Category(models.Model):
     id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
 
 
-class Expense(models.Model):
+class Finance(models.Model):
     name = models.TextField()
     description = models.TextField()
     cost = models.FloatField()
