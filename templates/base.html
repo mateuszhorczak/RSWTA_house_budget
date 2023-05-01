@@ -1,11 +1,24 @@
+{% load static %}
+
 <html lang="en">
     <head>
         <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
         <!-- Here code link to our css and js -->
     </head>
     <body>
         <header>
-            <!-- Here code our header -->
+            <nav>
+                <h2>Twoj budzet</h2>
+                <ul id="menu">
+                    <li><a href="#">Finanse</a></li>
+                    <li><a href="#">Portfele</a></li>
+                    <li><a href="#">Kategorie</a></li>
+                </ul>
+            </nav>
+            <div class="header-image">
+                <a href="#"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
+            </div>
         </header>
         <main>
             {% block content %}{% endblock %}

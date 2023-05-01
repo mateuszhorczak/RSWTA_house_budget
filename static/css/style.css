@@ -1,0 +1,59 @@
+header {
+    background-color: orange;
+    padding: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    height: 5%
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin-right: 10%;
+}
+
+h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+ul#menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    align-item: center;
+    margin: 0 3%;
+    font-size: 24px;
+}
+
+li:hover, .header-image img:hover {
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+header a {
+    text-decoration: none;
+    color: black;
+}
+
+.header-image {
+    width: 5%;
+}
+
+.header-image img {
+    max-width: 80%;
+    max-height: 80%
+    float: right;
+}
+
+body {
+    margin: 0;
+}
