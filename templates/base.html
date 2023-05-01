@@ -1,0 +1,29 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h2>Twoj budzet</h2>
+                <ul id="menu">
+                    <li><a href="{% url 'finances' %}">Finanse</a></li>
+                    <li><a href="{% url 'wallets' %}">Portfele</a></li>
+                    <li><a href="{% url 'categories' %}">Kategorie</a></li>
+                </ul>
+            </nav>
+            <div class="header-image">
+                <a href="{% url 'home' %}"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
+            </div>
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            <!-- Here code our footer -->
+        </footer>
+    </body>
+</html>

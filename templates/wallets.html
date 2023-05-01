@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Portfele{% endblock %}
+
+{% block content %}
+    <h1>To twoje portfele:</h1>
+    <ul>
+        {% for wallet in wallets_list %}
+            <li><a href="{% url 'wallet' wallet_name=wallet.name %}">{{ wallet.name }}</a></li>
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}
