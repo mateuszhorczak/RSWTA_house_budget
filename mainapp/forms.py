@@ -1,9 +1,13 @@
 from django import forms
 
 
-class Expanses(forms.Form):
-    pass
+class ExpansesForm(forms.Form):
+    title = forms.CharField(label='Tytul operacji', max_length=100)
+    description = forms.CharField(label='Opis', max_length=100)
+    amount = forms.FloatField(label='Kwota')
 
 
-class Incomes(forms.Form):
-    pass
+class IncomesForm(forms.Form):
+    title = forms.CharField(label='Tytul operacji', max_length=100)
+    description = forms.CharField(label='Opis', max_length=100)
+    amount = forms.FloatField(label='Kwota')

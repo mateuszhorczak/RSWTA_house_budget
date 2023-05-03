@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 
-from .models import Category, Finance, Wallet
-from .forms import Expanses, Incomes
+from .models import Category, FinanceOperation, Wallet
+from .forms import ExpansesForm, IncomesForm
 
 
 def home_view(request):
@@ -38,3 +39,18 @@ def category_view(request, category_name):
     categories_list = Category.objects.filter(name=category_name)
     context = {'category_name': category_name, 'wallets_list': categories_list}
     return render(request, 'category.html', context)
+
+
+def expanses(request):
+    expanses_form = ExpansesForm()
+    context = {'form': expanses_form}
+    if request.method == 'POST':
+        expanses_form = ExpansesForm(request.POST)
+        if expanses_form.is_valid():
+            return messages.info(request, 'To jest informacyjna wiadomosc')
+    return render(request, 'finances.html', context)
+
+
+def incomes(request):
+    form = IncomesForm()
+    return render(request, 'finances.html', {'form': form})

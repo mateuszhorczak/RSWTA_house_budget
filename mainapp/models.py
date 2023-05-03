@@ -16,8 +16,8 @@ class Category(models.Model):
     name = models.TextField()
 
 
-class Finance(models.Model):
-    name = models.TextField()
+class FinanceOperation(models.Model):
+    title = models.TextField()
     description = models.TextField()
     amount = models.FloatField()
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
