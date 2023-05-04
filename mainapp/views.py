@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -31,7 +32,13 @@ def categories_view(request):
 
 
 def finances_view(request):
-    return render(request, 'finances.html')
+    if request.method == 'POST':
+        form = ExpansesForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect("/thanks/")
+
+    context = {'form_expanses': ExpansesForm(), 'form_incomes': IncomesForm()}
+    return render(request, 'finances.html', context)
 
 
 def category_view(request, category_name):
@@ -40,17 +47,3 @@ def category_view(request, category_name):
     context = {'category_name': category_name, 'wallets_list': categories_list}
     return render(request, 'category.html', context)
 
-
-def expanses(request):
-    expanses_form = ExpansesForm()
-    context = {'form': expanses_form}
-    if request.method == 'POST':
-        expanses_form = ExpansesForm(request.POST)
-        if expanses_form.is_valid():
-            return messages.info(request, 'To jest informacyjna wiadomosc')
-    return render(request, 'finances.html', context)
-
-
-def incomes(request):
-    form = IncomesForm()
-    return render(request, 'finances.html', {'form': form})
