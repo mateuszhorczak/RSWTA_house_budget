@@ -5,15 +5,15 @@
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>Nieprawidlowa nazwa uzytkownika lub haslo!</p>
 {% endif %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore ma
+        ten dostep.</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>Zaloguj sie by zobaczyc ta strone!</p>
     {% endif %}
 {% endif %}
 

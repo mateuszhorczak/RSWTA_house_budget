@@ -61,6 +61,7 @@ def category_view(request, category_name):
     return render(request, 'category.html', context)
 
 
+@login_required(login_url='home')
 def login_view(request):
     if request.method == 'POST':
         username = request.POST["username"]
@@ -69,8 +70,6 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('mainapp:home_view'))
-        else:
-            messages.error(request, 'Nieprawidlowa nazwa uzytkownika lub haslo!')  # css "error"
     return render(request, 'registration/login.html')
 
 
