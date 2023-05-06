@@ -16,7 +16,10 @@
                 </ul>
             </nav>
             <div class="header-image">
-                <a href="{% url 'home' %}"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
+                <div id="header-image-inside">
+                    <a href="{% url 'home' %}"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
+                    <a href="{% url 'logout' %}"><img src="{% static 'images/logout-logo.png' %}" alt="Log Out"></a>
+                </div>
             </div>
         </header>
         <main>

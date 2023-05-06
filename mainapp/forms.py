@@ -1,5 +1,6 @@
 from django import forms
 from .models import FinanceOperation
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 class ExpansesForm(forms.Form):
@@ -13,6 +14,5 @@ class IncomesForm(forms.Form):
     description = forms.CharField(label='Opis', max_length=100)
     amount = forms.DecimalField(label='Kwota')
 
-
-class NameForm(forms.Form):
-    your_name = forms.CharField(label="your name", max_length=100)
+class LoginForm(forms.Form):
+    pass
