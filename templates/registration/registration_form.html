@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Logowanie{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block content %}
-
     {% if form.errors %}
-        <p>Nieprawidlowa nazwa uzytkownika lub haslo!</p>
+        <p>Blad podczas tworenia konta</p>
     {% endif %}
 
     {% if next %}
@@ -16,8 +15,8 @@
             <p>Zaloguj sie by zobaczyc ta strone!</p>
         {% endif %}
     {% endif %}
-    <p>Zaloguj sie</p>
-    <form method="post" action="{% url 'login' %}">
+    <p>Stworz konto!</p>
+    <form method="post" action="{% url 'registration' %}">
         {% csrf_token %}
         <table>
             <tr>
@@ -28,15 +27,16 @@
                 <td>{{ form.password.label_tag }}</td>
                 <td>{{ form.password }}</td>
             </tr>
+            <tr>
+                <td>{{ form.email.label_tag }}</td>
+                <td>{{ form.email }}</td>
+            </tr>
         </table>
 
-        <input type="submit" value="login">
+        <input type="submit" value="register">
         <input type="hidden" name="next" value="{{ next }}">
     </form>
 
-    {# Assumes you set up the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Zapomniales hasla?</a></p>
-    <p><a href="{% url 'registration' %}">Nie masz konta?</a></p>
 
 
 {% endblock %}

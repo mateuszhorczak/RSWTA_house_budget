@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
+from mainapp.views import registration_view
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='accounts/login/')),
+    path("accounts/register/", registration_view, name='registration'),
     path('mainapp/', include('mainapp.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

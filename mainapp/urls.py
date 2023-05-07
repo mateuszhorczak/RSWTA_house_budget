@@ -10,6 +10,7 @@ urlpatterns = [
     # path("accounts/logout/", auth_views.LogoutView.as_view()),
 
     path("home/", views.home_view, name='home'),
+
     path("wallets/", views.wallets_view, name='wallets'),
     path("categories/", views.categories_view, name='categories'),
     path("finances/", views.finances_view, name='finances'),
