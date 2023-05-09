@@ -9,7 +9,7 @@ from django.urls import reverse
 # Create your views here.
 
 from .models import Category, FinanceOperation, Wallet
-from .forms import ExpansesForm, IncomesForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm
 
 
 @login_required()
@@ -95,11 +95,11 @@ def password_reset_view(request):
 # @login_required(login_url='home')
 def registration_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
         context = {'form': form}
         return render(request, 'registration/registration_form.html', context)
