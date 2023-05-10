@@ -26,6 +26,9 @@ class IncomesForm(forms.Form):
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(label='email', max_length=100, widget=forms.EmailInput)
+    username = forms.CharField(help_text='')
+    password1 = forms.CharField(help_text='', widget=forms.PasswordInput(attrs={'type': 'password'}))
+    password2 = forms.CharField(help_text='', widget=forms.PasswordInput(attrs={'type': 'password'}))
 
     def clean_email(self):
         email = self.cleaned_data['email']
