@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -9,7 +9,7 @@ from django.urls import reverse
 # Create your views here.
 
 from .models import Category, FinanceOperation, Wallet
-from .forms import ExpansesForm, IncomesForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm
 
 
 @login_required()
@@ -79,8 +79,8 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('mainapp:login_view'))
 
 
-@login_required
-def password_change(request):
+@login_required(login_url='home')
+def password_reset_view(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
@@ -90,3 +90,16 @@ def password_change(request):
     else:
         form = PasswordChangeForm(user=request.user)
         return render(request, 'registration/password_reset_form.html', {'form': form})
+
+
+# @login_required(login_url='home')
+def registration_view(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+        context = {'form': form}
+        return render(request, 'registration/registration_form.html', context)

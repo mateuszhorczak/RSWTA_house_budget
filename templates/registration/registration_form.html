@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <p>Blad podczas tworenia konta</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore ma
+                ten dostep.</p>
+        {% else %}
+            <p>Zaloguj sie by zobaczyc ta strone!</p>
+        {% endif %}
+    {% endif %}
+    <p>Stworz konto!</p>
+    <form method="post" action="{% url 'registration' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" value="register">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+
+
+{% endblock %}

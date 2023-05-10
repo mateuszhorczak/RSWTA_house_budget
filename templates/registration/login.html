@@ -4,37 +4,39 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Nieprawidlowa nazwa uzytkownika lub haslo!</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore ma
-        ten dostep.</p>
-    {% else %}
-    <p>Zaloguj sie by zobaczyc ta strone!</p>
+    {% if form.errors %}
+        <p>Nieprawidlowa nazwa uzytkownika lub haslo!</p>
     {% endif %}
-{% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore ma
+                ten dostep.</p>
+        {% else %}
+            <p>Zaloguj sie by zobaczyc ta strone!</p>
+        {% endif %}
+    {% endif %}
+    <p>Zaloguj sie</p>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
 
-<input type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
-</form>
+        <input type="submit" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
 
-{# Assumes you set up the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    {# Assumes you set up the password_reset view in your URLconf #}
+    <p><a href="{% url 'password_reset' %}">Zapomniales hasla?</a></p>
+    <p><a href="{% url 'registration' %}">Nie masz konta?</a></p>
+
 
 {% endblock %}

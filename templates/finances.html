@@ -6,19 +6,17 @@
     <h1>To twoje mozliwosci finansowe:</h1>
 
     <div class="forms">
-        <form action="../home/" method="post">
+        <p>Dodaj nowy wydatek</p>
+        <form action="../home/" method="post" id="expenses">
             {% csrf_token %}
             {{ form_expanses.as_p }}
             <input type="submit" value="Wyslij">
         </form>
-
-        <form action="../home/" method="post">
+        <p>Dodaj nowy dochod</p>
+        <form action="../home/" method="post" id="incomes">
             {% csrf_token %}
             {{ form_incomes.as_p }}
             <input type="submit" value="Wyslij">
         </form>
-
     </div>
-
-
 {% endblock %}
