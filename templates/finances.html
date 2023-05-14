@@ -9,7 +9,7 @@
         <p>Dodaj nowy wydatek</p>
         <form action="../home/" method="post" id="expenses">
             {% csrf_token %}
-            {{ form_expanses.as_p }}
+            {{ form_expanses.as_p}}
             <input type="submit" value="Wyslij">
         </form>
         <p>Dodaj nowy dochod</p>
