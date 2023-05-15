@@ -14,7 +14,8 @@ from .forms import ExpansesForm, IncomesForm, UserRegistrationForm
 
 @login_required()
 def home_view(request):
-    return render(request, 'home.html')
+    username = request.user.username
+    return render(request, 'home.html', {'username': username})
 
 
 @login_required()
@@ -54,7 +55,6 @@ def finances_view(request):
 
     context = {'form_expanses': form_expanses, 'form_incomes': form_incomes}
     return render(request, 'finances.html', context)
-
 
 
 @login_required()
