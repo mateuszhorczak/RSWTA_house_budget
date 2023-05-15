@@ -48,9 +48,13 @@ def finances_view(request):
             return HttpResponseRedirect("/thanks/")
         elif form_incomes.is_valid():
             return HttpResponseRedirect("/not_thanks/")
+    else:
+        form_expanses = ExpansesForm()
+        form_incomes = IncomesForm()
 
-    context = {'form_expanses': ExpansesForm(), 'form_incomes': IncomesForm()}
+    context = {'form_expanses': form_expanses, 'form_incomes': form_incomes}
     return render(request, 'finances.html', context)
+
 
 
 @login_required()
