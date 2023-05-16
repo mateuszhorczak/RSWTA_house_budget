@@ -10,16 +10,19 @@ class Wallet(models.Model):
     name = models.TextField()
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category')
+
     def __str__(self):
         return self.name
 
 
 class Category(models.Model):
     name = models.TextField()
+
     def __str__(self):
         return self.name
 
-class FinanceOperation(models.Model):
+
+class ExpanseOperation(models.Model):
     title = models.TextField()
     amount = models.FloatField()
     description = models.TextField()
@@ -28,3 +31,10 @@ class FinanceOperation(models.Model):
 
     # id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     # id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
+
+
+class IncomeOperation(models.Model):
+    title = models.TextField()
+    amount = models.FloatField()
+    description = models.TextField()
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, null=True)
