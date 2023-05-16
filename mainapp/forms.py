@@ -2,19 +2,11 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import FinanceOperation, Wallet, Category
+from .models import IncomeOperation, Wallet, Category
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 class ExpansesForm(forms.Form):
-    title = forms.CharField(label='Tytul operacji', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
-    amount = forms.DecimalField(label='Kwota', decimal_places=2, widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
-    description = forms.CharField(label='Opis', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
-    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.all(), empty_label=None, widget=forms.Select(attrs={'placeholder': 'Wybierz portfel' }),to_field_name='name')
-    category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None, widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię'}),to_field_name='name')
-
-
-class IncomesForm(forms.Form):
     title = forms.CharField(label='Tytul operacji', max_length=100,
                             widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
     amount = forms.DecimalField(label='Kwota', decimal_places=2,
@@ -26,6 +18,17 @@ class IncomesForm(forms.Form):
     category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None,
                                       widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię'}),
                                       to_field_name='name')
+
+
+class IncomesForm(forms.Form):
+    title = forms.CharField(label='Tytul operacji', max_length=100,
+                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
+    amount = forms.DecimalField(label='Kwota', decimal_places=2,
+                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
+    description = forms.CharField(label='Opis', max_length=100,
+                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
+    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.all(), empty_label=None,
+                                    widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
 
 
 class UserRegistrationForm(UserCreationForm):

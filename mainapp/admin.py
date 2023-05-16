@@ -5,5 +5,6 @@ from django.contrib import admin
 from . import models
 
 admin.site.register(models.Category)
-admin.site.register(models.FinanceOperation)
+admin.site.register(models.IncomeOperation)
 admin.site.register(models.Wallet)
+admin.site.register(models.ExpanseOperation)

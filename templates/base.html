@@ -1,28 +1,30 @@
 {% load static %}
 
 <html lang="en">
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    </head>
-    <body>
-        <header>
-            <nav>
-                <h2>Twoj budzet</h2>
-                <ul id="menu">
-                    <li><a href="{% url 'finances' %}">Finanse</a></li>
-                    <li><a href="{% url 'wallets' %}">Portfele</a></li>
-                    <li><a href="{% url 'categories' %}">Kategorie</a></li>
-                    <li><a href="{% url 'home' %}"><img id="home-logo" src="{% static 'images/home-logo.png' %}" alt="Home page"></a></li>
-                    <li><a href="{% url 'logout' %}"><img id="logout-logo" src="{% static 'images/logout-logo.png' %}" alt="Log Out"></a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-        <footer>
-            <!-- Here code our footer -->
-        </footer>
-    </body>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header>
+    <nav>
+        <h2>Twoj budzet</h2>
+        <ul id="menu">
+            <li><a href="{% url 'finances' %}">Finanse</a></li>
+            <li><a href="{% url 'wallets' %}">Portfele</a></li>
+            <li><a href="{% url 'categories' %}">Kategorie</a></li>
+            <li><a href="{% url 'home' %}"><img id="home-logo" src="{% static 'images/home-logo.png' %}"
+                                                alt="Home page"></a></li>
+            <li><a href="{% url 'logout' %}"><img id="logout-logo" src="{% static 'images/logout-logo.png' %}"
+                                                  alt="Log Out"></a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <!-- Here code our footer -->
+</footer>
+</body>
 </html>
