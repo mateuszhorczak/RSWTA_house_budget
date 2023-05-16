@@ -10,15 +10,21 @@ class Wallet(models.Model):
     name = models.TextField()
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category')
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
     name = models.TextField()
-
+    def __str__(self):
+        return self.name
 
 class FinanceOperation(models.Model):
     title = models.TextField()
-    description = models.TextField()
     amount = models.FloatField()
-    id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
-    id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
+    description = models.TextField()
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+
+    # id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    # id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)

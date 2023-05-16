@@ -7,13 +7,13 @@
 
     <div class="forms">
         <p>Dodaj nowy wydatek</p>
-        <form action="../home/" method="post" id="expenses">
+        <form action="/home/" method="POST" id="expenses">
             {% csrf_token %}
             {{ form_expanses.as_p}}
-            <input type="submit" value="Wyslij">
+            <button type="submit">Wyślij</button>
         </form>
         <p>Dodaj nowy dochod</p>
-        <form action="../home/" method="post" id="incomes">
+        <form action="/home/" method="POST" id="incomes">
             {% csrf_token %}
             {{ form_incomes.as_p }}
             <input type="submit" value="Wyslij">
