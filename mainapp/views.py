@@ -41,14 +41,62 @@ def categories_view(request):
 
 
 @login_required()
+# def finances_view(request):
+#     if request.method == 'POST':
+#         form_expanses = ExpansesForm(request.POST)
+#         # form_incomes = IncomesForm(request.POST)
+#         if form_expanses.is_valid():
+#             title = form.cleaned_data['title']
+#             amount = form.cleaned_data['amount']
+#             description = form.cleaned_data['description']
+#             wallet = form.cleaned_data['wallet']
+#             category = form.cleaned_data['category']
+#             finance_operation = FinanceOperation.objects.create(title=title, description=description, amount=amount, wallet=wallet,
+#                                                                 category =category)
+#
+#             return HttpResponseRedirect("/thanks/")
+#         # elif form_expanses.is_valid():
+#         #     return HttpResponseRedirect("/not_thanks/")
+#     else:
+#         form_expanses = ExpansesForm()
+#         # form_incomes = IncomesForm()
+#
+#     # context = {'form_expanses': form_expanses, 'form_incomes': form_incomes}
+#     context = {'form_expanses': form_expanses}
+#     return render(request, 'finances.html', context)
+
 def finances_view(request):
     if request.method == 'POST':
         form_expanses = ExpansesForm(request.POST)
         form_incomes = IncomesForm(request.POST)
         if form_expanses.is_valid():
-            return HttpResponseRedirect("/thanks/")
-        elif form_incomes.is_valid():
-            return HttpResponseRedirect("/not_thanks/")
+            title = form_expanses.cleaned_data['title']
+            amount = form_expanses.cleaned_data['amount']
+            description = form_expanses.cleaned_data['description']
+            wallet = form_expanses.cleaned_data['wallet']
+            category = form_expanses.cleaned_data['category']
+            finance_operation = FinanceOperation.objects.create(
+                title=title,
+                description=description,
+                amount=amount,
+                wallet=wallet,
+                category=category
+            )
+            return HttpResponseRedirect("/home/")
+        if form_incomes.is_valid():
+            title = form_incomes.cleaned_data['title']
+            amount = form_incomes.cleaned_data['amount']
+            description = form_incomes.cleaned_data['description']
+            wallet = form_incomes.cleaned_data['wallet']
+            category = form_incomes.cleaned_data['category']
+            finance_operation = FinanceOperation.objects.create(
+                title=title,
+                description=description,
+                amount=amount,
+                wallet=wallet,
+                category=category
+            )
+            return HttpResponseRedirect("/home/")
     else:
         form_expanses = ExpansesForm()
         form_incomes = IncomesForm()

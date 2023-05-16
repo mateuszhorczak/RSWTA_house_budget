@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 from mainapp.views import registration_view
+from mainapp.views import finances_view
 
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path("accounts/register/", registration_view, name='registration'),
     path('mainapp/', include('mainapp.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('home/', finances_view, name='home'),
 ]
