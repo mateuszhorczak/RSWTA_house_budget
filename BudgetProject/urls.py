@@ -28,5 +28,4 @@ urlpatterns = [
     path("accounts/register/", registration_view, name='registration'),
     path('mainapp/', include('mainapp.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('home/', finances_view, name='home'),
 ]

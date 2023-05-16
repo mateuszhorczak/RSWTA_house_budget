@@ -82,7 +82,7 @@ def finances_view(request):
                 wallet=wallet,
                 category=category
             )
-            return HttpResponseRedirect("/home/")
+            return HttpResponseRedirect("/mainapp/finances/")
         if form_incomes.is_valid():
             title = form_incomes.cleaned_data['title']
             amount = form_incomes.cleaned_data['amount']
@@ -96,7 +96,7 @@ def finances_view(request):
                 wallet=wallet,
                 category=category
             )
-            return HttpResponseRedirect("/home/")
+            return HttpResponseRedirect("/mainapp/finances/")
     else:
         form_expanses = ExpansesForm()
         form_incomes = IncomesForm()
