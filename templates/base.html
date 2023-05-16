@@ -13,14 +13,10 @@
                     <li><a href="{% url 'finances' %}">Finanse</a></li>
                     <li><a href="{% url 'wallets' %}">Portfele</a></li>
                     <li><a href="{% url 'categories' %}">Kategorie</a></li>
+                    <li><a href="{% url 'home' %}"><img id="home-logo" src="{% static 'images/home-logo.png' %}" alt="Home page"></a></li>
+                    <li><a href="{% url 'logout' %}"><img id="logout-logo" src="{% static 'images/logout-logo.png' %}" alt="Log Out"></a></li>
                 </ul>
             </nav>
-            <div class="header-image">
-                <div id="header-image-inside">
-                    <a href="{% url 'home' %}"><img src="{% static 'images/home-logo.png' %}" alt="Home page"></a>
-                    <a href="{% url 'logout' %}"><img src="{% static 'images/logout-logo.png' %}" alt="Log Out"></a>
-                </div>
-            </div>
         </header>
         <main>
             {% block content %}{% endblock %}

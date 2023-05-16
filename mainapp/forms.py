@@ -13,6 +13,7 @@ class ExpansesForm(forms.Form):
     wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.all(), empty_label=None, widget=forms.Select(attrs={'placeholder': 'Wybierz portfel' }),to_field_name='name')
     category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None, widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię'}),to_field_name='name')
 
+
 class IncomesForm(forms.Form):
     title = forms.CharField(label='Tytul operacji', max_length=100,
                             widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
@@ -42,5 +43,3 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
-
-

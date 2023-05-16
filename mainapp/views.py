@@ -14,7 +14,8 @@ from .forms import ExpansesForm, IncomesForm, UserRegistrationForm
 
 @login_required()
 def home_view(request):
-    return render(request, 'home.html')
+    username = request.user.username
+    return render(request, 'home.html', {'username': username})
 
 
 @login_required()
