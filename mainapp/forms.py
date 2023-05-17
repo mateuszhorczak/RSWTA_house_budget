@@ -43,6 +43,15 @@ class WalletForm(forms.ModelForm):
         fields = ['name', 'categories']
 
 
+class CategoryForm(forms.ModelForm):
+    name = forms.CharField(label='Nazwa kategorii', max_length=100,
+                           widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe kategorii'}))
+
+    class Meta:
+        model = Category
+        fields = ['name']
+
+
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(label='email', max_length=100, widget=forms.EmailInput)
     username = forms.CharField(help_text='')

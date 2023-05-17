@@ -9,7 +9,7 @@ from django.urls import reverse
 # Create your views here.
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
-from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm
 
 
 @login_required()
@@ -43,8 +43,17 @@ def wallet_view(request, wallet_name):
 
 @login_required()
 def categories_view(request):
+    if request.method == 'POST':
+        form_category = CategoryForm(request.POST)
+        if form_category.is_valid():
+            category = form_category.save(commit=False)
+            category.id_user = request.user
+            category.save()
+            return HttpResponseRedirect('/mainapp/categories')
+    else:
+        form_category = CategoryForm()
     categories_list = Category.objects.all()
-    context = {'categories_list': categories_list}
+    context = {'categories_list': categories_list, 'form_category': form_category}
     return render(request, 'categories.html', context)
 
 
