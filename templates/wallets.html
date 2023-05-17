@@ -11,4 +11,14 @@
         {% endfor %}
     </ul>
 
+    <div class="forms">
+        <p>Dodaj nowy portfel</p>
+        <form action="{% url 'wallets' %}" method="POST" id="wallets">
+            {% csrf_token %}
+            {{ form_wallet.as_p }}
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+
+
 {% endblock %}

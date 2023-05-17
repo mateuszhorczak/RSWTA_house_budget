@@ -31,6 +31,18 @@ class IncomesForm(forms.Form):
                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
 
 
+class WalletForm(forms.ModelForm):
+    name = forms.CharField(label='Nazwa portfela', max_length=100,
+                           widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe portfela'}))
+    categories = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None,
+                                        widget=forms.Select(attrs={'placeholder': 'Wybierz kategorie'}),
+                                        to_field_name='name')
+
+    class Meta:
+        model = Wallet
+        fields = ['name', 'categories']
+
+
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(label='email', max_length=100, widget=forms.EmailInput)
     username = forms.CharField(help_text='')
