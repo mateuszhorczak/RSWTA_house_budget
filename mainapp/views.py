@@ -9,7 +9,7 @@ from django.urls import reverse
 # Create your views here.
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
-from .forms import ExpansesForm, IncomesForm, UserRegistrationForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm
 
 
 @login_required()
@@ -20,14 +20,22 @@ def home_view(request):
 
 @login_required()
 def wallets_view(request):
+    if request.method == 'POST':
+        form_wallet = WalletForm(request.POST)
+        if form_wallet.is_valid():
+            wallet = form_wallet.save(commit=False)
+            wallet.id_user = request.user
+            wallet.save()
+            return HttpResponseRedirect("/mainapp/wallets")
+    else:
+        form_wallet = WalletForm()
     wallets_list = Wallet.objects.all()
-    context = {'wallets_list': wallets_list}
+    context = {'wallets_list': wallets_list, 'form_wallet': form_wallet}
     return render(request, 'wallets.html', context)
 
 
 @login_required()
 def wallet_view(request, wallet_name):
-    wallet = get_object_or_404(Wallet, name=wallet_name)
     wallets_list = Wallet.objects.filter(name=wallet_name)
     context = {'wallet_name': wallet_name, 'wallets_list': wallets_list}
     return render(request, 'wallet.html', context)
@@ -46,7 +54,6 @@ def finances_view(request):
         form_expanses = ExpansesForm(request.POST)
         form_incomes = IncomesForm(request.POST)
         if form_expanses.is_valid():
-            print('gowno')
             title = form_expanses.cleaned_data['title']
             amount = form_expanses.cleaned_data['amount']
             description = form_expanses.cleaned_data['description']
@@ -61,7 +68,6 @@ def finances_view(request):
             )
             return HttpResponseRedirect("/mainapp/finances/")
         if form_incomes.is_valid():
-            print('dupa')
             title = form_incomes.cleaned_data['title']
             amount = form_incomes.cleaned_data['amount']
             description = form_incomes.cleaned_data['description']
