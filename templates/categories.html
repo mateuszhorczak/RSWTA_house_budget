@@ -11,4 +11,12 @@
         {% endfor %}
     </ul>
 
+    <div class="forms">
+        <p>Dodaj nowa kategorie</p>
+        <form action="{% url 'categories' %}" method="POST" id="categories">
+            {% csrf_token %}
+            {{ form_category.as_p }}
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
 {% endblock %}

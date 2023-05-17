@@ -17,6 +17,7 @@ class Wallet(models.Model):
 
 class Category(models.Model):
     name = models.TextField()
+    id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
