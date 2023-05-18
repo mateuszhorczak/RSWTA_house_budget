@@ -8,6 +8,6 @@ Aplikacja powinna pozwalać na obsługę wielu portfeli, każdy z własnym zesta
 projekt dla grupy maksymalnie 3-osobowej.
 
 # How to run it?
------------
+
 1. clone repo `git clone git@github.com:mateuszhorczak/RSWTA_house_budget.git`
 2. run `docker compose up`
