@@ -36,8 +36,9 @@ def wallets_view(request):
 
 @login_required()
 def wallet_view(request, wallet_name):
-    wallets_list = Wallet.objects.filter(name=wallet_name)
-    context = {'wallet_name': wallet_name, 'wallets_list': wallets_list}
+    wallet = Wallet.objects.get(name=wallet_name)
+    categories_list = wallet.categories.all()
+    context = {'wallet_name': wallet_name, 'categories_list': categories_list}
     return render(request, 'wallet.html', context)
 
 

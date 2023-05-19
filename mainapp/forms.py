@@ -34,9 +34,9 @@ class IncomesForm(forms.Form):
 class WalletForm(forms.ModelForm):
     name = forms.CharField(label='Nazwa portfela', max_length=100,
                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe portfela'}))
-    categories = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None,
-                                        widget=forms.Select(attrs={'placeholder': 'Wybierz kategorie'}),
-                                        to_field_name='name')
+    categories = forms.ModelMultipleChoiceField(label='Kategoria', queryset=Category.objects.all(),
+                                                widget=forms.SelectMultiple(attrs={'placeholder': 'Wybierz kategorie'}),
+                                                to_field_name='name')
 
     class Meta:
         model = Wallet
