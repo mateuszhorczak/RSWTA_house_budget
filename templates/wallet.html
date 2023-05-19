@@ -4,5 +4,12 @@
 
 {% block content %}
     <h1>{{ wallet_name }}</h1>
+    <p>Kategorie tego portfela: </p>
+    <ul>
+        {% for category in categories_list %}
+            <li>{{ category.name }}</li>
+
+        {% endfor %}
+    </ul>
 
 {% endblock %}
