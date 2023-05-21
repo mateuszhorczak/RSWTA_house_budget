@@ -13,11 +13,16 @@ class ExpansesForm(forms.Form):
                                 widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
     description = forms.CharField(label='Opis', max_length=100,
                                   widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
-    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.all(), empty_label=None,
+    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(),
                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
-    category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.all(), empty_label=None,
+    category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.none(),
                                       widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię'}),
                                       to_field_name='name')
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['wallet'].queryset = Wallet.objects.filter(id_user=user)
+        self.fields['category'].queryset = Category.objects.filter(id_user=user)
 
 
 class IncomesForm(forms.Form):
@@ -27,16 +32,24 @@ class IncomesForm(forms.Form):
                                 widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
     description = forms.CharField(label='Opis', max_length=100,
                                   widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
-    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.all(), empty_label=None,
+    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(), empty_label=None,
                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['wallet'].queryset = Wallet.objects.filter(id_user=user)
 
 
 class WalletForm(forms.ModelForm):
     name = forms.CharField(label='Nazwa portfela', max_length=100,
                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe portfela'}))
-    categories = forms.ModelMultipleChoiceField(label='Kategoria', queryset=Category.objects.all(),
+    categories = forms.ModelMultipleChoiceField(label='Kategoria', queryset=Category.objects.none(),
                                                 widget=forms.SelectMultiple(attrs={'placeholder': 'Wybierz kategorie'}),
                                                 to_field_name='name')
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['categories'].queryset = Category.objects.filter(id_user=user)
 
     class Meta:
         model = Wallet

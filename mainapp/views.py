@@ -21,15 +21,17 @@ def home_view(request):
 @login_required()
 def wallets_view(request):
     if request.method == 'POST':
-        form_wallet = WalletForm(request.POST)
+        form_wallet = WalletForm(request.POST, user=request.user)
         if form_wallet.is_valid():
             wallet = form_wallet.save(commit=False)
             wallet.id_user = request.user
             wallet.save()
+            form_wallet.instance.categories.set(form_wallet.cleaned_data['categories'])
             return HttpResponseRedirect("/mainapp/wallets")
     else:
         form_wallet = WalletForm()
-    wallets_list = Wallet.objects.all()
+    form_wallet.fields['categories'].queryset = Category.objects.filter(id_user=request.user)
+    wallets_list = Wallet.objects.filter(id_user=request.user)
     context = {'wallets_list': wallets_list, 'form_wallet': form_wallet}
     return render(request, 'wallets.html', context)
 
@@ -37,7 +39,7 @@ def wallets_view(request):
 @login_required()
 def wallet_view(request, wallet_name):
     wallet = Wallet.objects.get(name=wallet_name)
-    categories_list = wallet.categories.all()
+    categories_list = wallet.categories.filter(id_user=request.user)
     context = {'wallet_name': wallet_name, 'categories_list': categories_list}
     return render(request, 'wallet.html', context)
 
@@ -53,16 +55,24 @@ def categories_view(request):
             return HttpResponseRedirect('/mainapp/categories')
     else:
         form_category = CategoryForm()
-    categories_list = Category.objects.all()
+    categories_list = Category.objects.filter(id_user=request.user)
     context = {'categories_list': categories_list, 'form_category': form_category}
     return render(request, 'categories.html', context)
 
 
 @login_required()
+def category_view(request, category_name):
+    category = get_object_or_404(Category, name=category_name)
+    categories_list = Category.objects.filter(name=category_name)
+    context = {'category_name': category_name, 'wallets_list': categories_list}
+    return render(request, 'category.html', context)
+
+
+@login_required()
 def finances_view(request):
     if request.method == 'POST':
-        form_expanses = ExpansesForm(request.POST)
-        form_incomes = IncomesForm(request.POST)
+        form_expanses = ExpansesForm(request.POST, user=request.user)
+        form_incomes = IncomesForm(request.POST, user=request.user)
         if form_expanses.is_valid():
             title = form_expanses.cleaned_data['title']
             amount = form_expanses.cleaned_data['amount']
@@ -90,8 +100,8 @@ def finances_view(request):
             )
             return HttpResponseRedirect("/mainapp/finances/")
     else:
-        form_expanses = ExpansesForm()
-        form_incomes = IncomesForm()
+        form_expanses = ExpansesForm(user=request.user)
+        form_incomes = IncomesForm(user=request.user)
 
     context = {'form_expanses': form_expanses, 'form_incomes': form_incomes}
     return render(request, 'finances.html', context)

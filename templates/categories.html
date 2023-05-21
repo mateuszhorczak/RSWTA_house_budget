@@ -6,7 +6,7 @@
     <h1>To twoje kategorie:</h1>
     <ul>
         {% for category in categories_list %}
-            <li><a href="{% url 'category' category_name=category.name %}">{{ category.name }}</a></li>
+            <li>{{ category.name }}</li>
 
         {% endfor %}
     </ul>
