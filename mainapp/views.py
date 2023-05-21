@@ -40,7 +40,40 @@ def wallets_view(request):
 def wallet_view(request, wallet_name):
     wallet = Wallet.objects.get(name=wallet_name)
     categories_list = wallet.categories.filter(id_user=request.user)
-    context = {'wallet_name': wallet_name, 'categories_list': categories_list}
+
+    if request.method == 'POST':
+        form_expanses = ExpansesForm(request.POST, user=request.user, wallet=wallet.name)
+        form_incomes = IncomesForm(request.POST)
+        if form_expanses.is_valid():
+            title = form_expanses.cleaned_data['title']
+            amount = form_expanses.cleaned_data['amount']
+            description = form_expanses.cleaned_data['description']
+            category = form_expanses.cleaned_data['category']
+            expanse_operation = ExpanseOperation.objects.create(
+                title=title,
+                description=description,
+                amount=amount,
+                wallet=wallet,
+                category=category
+            )
+            return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
+        if form_incomes.is_valid():
+            title = form_incomes.cleaned_data['title']
+            amount = form_incomes.cleaned_data['amount']
+            description = form_incomes.cleaned_data['description']
+            income_operation = IncomeOperation.objects.create(
+                title=title,
+                description=description,
+                amount=amount,
+                wallet=wallet,
+            )
+            return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
+    else:
+        form_expanses = ExpansesForm(user=request.user, wallet=wallet.name)
+        form_incomes = IncomesForm()
+
+    context = {'wallet_name': wallet_name, 'categories_list': categories_list, 'form_expanses': form_expanses,
+               'form_incomes': form_incomes}
     return render(request, 'wallet.html', context)
 
 
@@ -66,45 +99,6 @@ def category_view(request, category_name):
     categories_list = Category.objects.filter(name=category_name)
     context = {'category_name': category_name, 'wallets_list': categories_list}
     return render(request, 'category.html', context)
-
-
-@login_required()
-def finances_view(request):
-    if request.method == 'POST':
-        form_expanses = ExpansesForm(request.POST, user=request.user)
-        form_incomes = IncomesForm(request.POST, user=request.user)
-        if form_expanses.is_valid():
-            title = form_expanses.cleaned_data['title']
-            amount = form_expanses.cleaned_data['amount']
-            description = form_expanses.cleaned_data['description']
-            wallet = form_expanses.cleaned_data['wallet']
-            category = form_expanses.cleaned_data['category']
-            expanse_operation = ExpanseOperation.objects.create(
-                title=title,
-                description=description,
-                amount=amount,
-                wallet=wallet,
-                category=category
-            )
-            return HttpResponseRedirect("/mainapp/finances/")
-        if form_incomes.is_valid():
-            title = form_incomes.cleaned_data['title']
-            amount = form_incomes.cleaned_data['amount']
-            description = form_incomes.cleaned_data['description']
-            wallet = form_incomes.cleaned_data['wallet']
-            income_operation = IncomeOperation.objects.create(
-                title=title,
-                description=description,
-                amount=amount,
-                wallet=wallet,
-            )
-            return HttpResponseRedirect("/mainapp/finances/")
-    else:
-        form_expanses = ExpansesForm(user=request.user)
-        form_incomes = IncomesForm(user=request.user)
-
-    context = {'form_expanses': form_expanses, 'form_incomes': form_incomes}
-    return render(request, 'finances.html', context)
 
 
 @login_required()

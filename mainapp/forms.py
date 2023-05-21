@@ -13,16 +13,13 @@ class ExpansesForm(forms.Form):
                                 widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
     description = forms.CharField(label='Opis', max_length=100,
                                   widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
-    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(),
-                                    widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
     category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.none(),
-                                      widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię'}),
+                                      widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię', }),
                                       to_field_name='name')
 
-    def __init__(self, *args, user=None, **kwargs):
+    def __init__(self, *args, user=None, wallet=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['wallet'].queryset = Wallet.objects.filter(id_user=user)
-        self.fields['category'].queryset = Category.objects.filter(id_user=user)
+        self.fields['category'].queryset = Wallet.objects.filter(name=wallet, id_user=user).first().categories
 
 
 class IncomesForm(forms.Form):
@@ -32,12 +29,6 @@ class IncomesForm(forms.Form):
                                 widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
     description = forms.CharField(label='Opis', max_length=100,
                                   widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
-    wallet = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(), empty_label=None,
-                                    widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}), to_field_name='name')
-
-    def __init__(self, *args, user=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['wallet'].queryset = Wallet.objects.filter(id_user=user)
 
 
 class WalletForm(forms.ModelForm):
