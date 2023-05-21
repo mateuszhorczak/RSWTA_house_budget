@@ -4,13 +4,13 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    {% block head %}{% endblock %}
 </head>
 <body>
 <header>
     <nav>
         <h2>Twoj budzet</h2>
         <ul id="menu">
-            <li><a href="{% url 'finances' %}">Finanse</a></li>
             <li><a href="{% url 'wallets' %}">Portfele</a></li>
             <li><a href="{% url 'categories' %}">Kategorie</a></li>
             <li><a href="{% url 'home' %}"><img id="home-logo" src="{% static 'images/home-logo.png' %}"
