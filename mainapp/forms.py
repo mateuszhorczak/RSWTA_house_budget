@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 
-from .models import IncomeOperation, Wallet, Category
+from .models import IncomeOperation, Wallet, Category, ExpanseOperation
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
@@ -54,6 +55,91 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name']
+
+
+class DatabaseRecordForm(forms.Form):
+    title = forms.CharField(label='Tytuł operacji', max_length=100,
+                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadź tytuł'}), required=False)
+    amount = forms.DecimalField(label='Kwota', decimal_places=2,
+                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadź kwotę'}), required=False)
+    description = forms.CharField(label='Opis', max_length=100,
+                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadź opis'}), required=False)
+    categories = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.none(),
+                                        widget=forms.Select(attrs={'placeholder': 'Wybierz kategorie'}),
+                                        to_field_name='name', required=False)
+    wallets = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(),
+                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}),
+                                     to_field_name='name', required=False)
+    operation_type = forms.ChoiceField(label='Typ operacji', choices=[('expense', 'Wydatek'), ('income', 'Dochód'),
+                                                                      ('both', 'Oba')])
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['categories'].queryset = Category.objects.filter(id_user=user)
+        self.fields['wallets'].queryset = Wallet.objects.filter(id_user=user)
+
+    def search(self):
+        operation_type = self.cleaned_data['operation_type']
+        categories = self.cleaned_data['categories']
+        wallets = self.cleaned_data['wallets']
+        title = self.cleaned_data['title']
+        amount = self.cleaned_data['amount']
+        description = self.cleaned_data['description']
+
+        queryset_income = IncomeOperation.objects.all()
+        queryset_expense = ExpanseOperation.objects.all()
+        if operation_type == 'expense':
+            print('wydatek')
+            if title:
+                queryset_expense = queryset_expense.filter(title__icontains=title)
+            if description:
+                queryset_expense = queryset_expense.filter(description__icontains=description)
+            if amount:
+                queryset_expense = queryset_expense.filter(amount=amount)
+            if categories:
+                queryset_expense = queryset_expense.filter(category__in=categories)
+            if wallets:
+                queryset_expense = queryset_expense.filter(wallet__in=wallets)
+            return queryset_expense, []
+
+        elif operation_type == 'income':
+            print('przychod')
+            if title:
+                print('wszedlem w tytul przychodu')
+                queryset_income = queryset_income.filter(title__icontains=title)
+            if description:
+                print('wszedlem w opis przychodu')
+                queryset_income = queryset_income.filter(description__icontains=description)
+            if amount:
+                print('wszedlem w kwote przychodu')
+                queryset_income = queryset_income.filter(amount=amount)
+            if wallets:
+                print('wszedlem w portfele przychodu')
+                queryset_income = queryset_income.filter(wallet__in=wallets)
+            return [], queryset_income
+
+        elif operation_type == 'both':
+
+            if title:
+                queryset_expense = queryset_expense.filter(title__icontains=title)
+            if description:
+                queryset_expense = queryset_expense.filter(description__icontains=description)
+            if amount:
+                queryset_expense = queryset_expense.filter(amount=amount)
+            if categories:
+                queryset_expense = queryset_expense.filter(category__in=categories)
+            if wallets:
+                queryset_expense = queryset_expense.filter(wallet__in=wallets)
+
+            if title:
+                queryset_income = queryset_income.filter(title__icontains=title)
+            if description:
+                queryset_income = queryset_income.filter(description__icontains=description)
+            if amount:
+                queryset_income = queryset_income.filter(amount=amount)
+            if wallets:
+                queryset_income = queryset_income.filter(wallet__in=wallets)
+            return queryset_expense, queryset_income
 
 
 class UserRegistrationForm(UserCreationForm):

@@ -30,9 +30,6 @@ class ExpanseOperation(models.Model):
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
-    # id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
-    # id_wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
-
 
 class IncomeOperation(models.Model):
     title = models.TextField()

@@ -3,6 +3,24 @@
 {% block title %}Strona glowna{% endblock %}
 
 {% block content %}
-    <h1>Witaj <b>{{ username }}</b> na stronie glownej!</h1>
+    <h1>Witaj <b><i>{{ username }}</i></b> na stronie glownej!</h1>
 
+    <div class="forms">
+        <p>Wyszukaj twoje operacje</p>
+        <form action="{% url 'home' %}" method="POST" id="home">
+            {% csrf_token %}
+            {{ form_database_record.as_p }}
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+    <div class="operations">
+        <h2>Znalezione operacje:</h2>
+        <ul>
+            {% for operation in operations %}
+                <li>{{ operation.title }} - {{ operation.amount }}</li>
+                {% empty %}
+                <li>Brak znalezionych operacji</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
