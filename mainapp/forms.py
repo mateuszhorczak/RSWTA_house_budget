@@ -91,15 +91,15 @@ class DatabaseRecordForm(forms.Form):
         if operation_type == 'expense':
             print('wydatek')
             if title:
-                queryset_expense = queryset_expense.filter(title__icontains=title)
+                queryset_expense = queryset_expense.filter(title_incontains=title)
             if description:
                 queryset_expense = queryset_expense.filter(description__icontains=description)
             if amount:
                 queryset_expense = queryset_expense.filter(amount=amount)
             if categories:
-                queryset_expense = queryset_expense.filter(category__in=categories)
+                queryset_expense = queryset_expense.filter(category__pk=categories.pk)
             if wallets:
-                queryset_expense = queryset_expense.filter(wallet__in=wallets)
+                queryset_expense = queryset_expense.filter(wallet__pk=wallets.pk)
             return queryset_expense, []
 
         elif operation_type == 'income':
@@ -115,7 +115,7 @@ class DatabaseRecordForm(forms.Form):
                 queryset_income = queryset_income.filter(amount=amount)
             if wallets:
                 print('wszedlem w portfele przychodu')
-                queryset_income = queryset_income.filter(wallet__in=wallets)
+                queryset_income = queryset_income.filter(wallet__pk=wallets.pk)
             return [], queryset_income
 
         elif operation_type == 'both':
@@ -127,9 +127,9 @@ class DatabaseRecordForm(forms.Form):
             if amount:
                 queryset_expense = queryset_expense.filter(amount=amount)
             if categories:
-                queryset_expense = queryset_expense.filter(category__in=categories)
+                queryset_expense = queryset_expense.filter(category__pk=categories.pk)
             if wallets:
-                queryset_expense = queryset_expense.filter(wallet__in=wallets)
+                queryset_expense = queryset_expense.filter(wallet__pk=wallets.pk)
 
             if title:
                 queryset_income = queryset_income.filter(title__icontains=title)
@@ -138,7 +138,7 @@ class DatabaseRecordForm(forms.Form):
             if amount:
                 queryset_income = queryset_income.filter(amount=amount)
             if wallets:
-                queryset_income = queryset_income.filter(wallet__in=wallets)
+                queryset_income = queryset_income.filter(wallet__pk=wallets.pk)
             return queryset_expense, queryset_income
 
 
