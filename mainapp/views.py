@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -9,13 +10,24 @@ from django.urls import reverse
 # Create your views here.
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
-from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm, DatabaseRecordForm
 
 
 @login_required()
 def home_view(request):
     username = request.user.username
-    return render(request, 'home.html', {'username': username})
+    if request.method == 'POST':
+        form_database_record = DatabaseRecordForm(request.POST, user=request.user)
+        if form_database_record.is_valid():
+            expense_operations, income_operations = form_database_record.search()
+            operations = list(expense_operations) + list(income_operations)
+            context = {'username': username, 'form_database_record': form_database_record, 'operations': operations}
+            return render(request, 'home.html', context)
+    else:
+        form_database_record = DatabaseRecordForm(user=request.user)
+
+    context = {'username': username, 'form_database_record': form_database_record}
+    return render(request, 'home.html', context)
 
 
 @login_required()
