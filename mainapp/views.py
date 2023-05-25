@@ -37,6 +37,7 @@ def wallets_view(request):
         if form_wallet.is_valid():
             wallet = form_wallet.save(commit=False)
             wallet.id_user = request.user
+            wallet.account_balance = 0
             wallet.save()
             form_wallet.instance.categories.set(form_wallet.cleaned_data['categories'])
             return HttpResponseRedirect("/mainapp/wallets")
@@ -69,6 +70,8 @@ def wallet_view(request, wallet_name):
                 category=category,
                 id_user=request.user
             )
+            wallet.account_balance -= float(amount)
+            wallet.save()
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
         if form_incomes.is_valid():
             title = form_incomes.cleaned_data['title']
@@ -82,13 +85,15 @@ def wallet_view(request, wallet_name):
                 wallet=wallet,
                 id_user=request.user,
             )
+            wallet.account_balance += float(amount)
+            wallet.save()
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
     else:
         form_expanses = ExpansesForm(user=request.user, wallet=wallet.name)
         form_incomes = IncomesForm()
 
     context = {'wallet_name': wallet_name, 'categories_list': categories_list, 'form_expanses': form_expanses,
-               'form_incomes': form_incomes}
+               'form_incomes': form_incomes, 'account_balance': wallet.account_balance}
     return render(request, 'wallet.html', context)
 
 

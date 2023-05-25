@@ -10,6 +10,7 @@ class Wallet(models.Model):
     name = models.TextField()
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category')
+    account_balance = models.FloatField()
 
     def __str__(self):
         return self.name
