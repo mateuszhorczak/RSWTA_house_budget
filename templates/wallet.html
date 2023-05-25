@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1>{{ wallet_name }}</h1>
+    <p>Stan twojego portfela: <b>{{ account_balance }}</b> zł</p>
     <p>Kategorie tego portfela: </p>
     <ul>
         {% for category in categories_list %}

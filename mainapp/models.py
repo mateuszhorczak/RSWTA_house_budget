@@ -10,6 +10,7 @@ class Wallet(models.Model):
     name = models.TextField()
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     categories = models.ManyToManyField('Category')
+    account_balance = models.FloatField()
 
     def __str__(self):
         return self.name
@@ -29,6 +30,7 @@ class ExpanseOperation(models.Model):
     description = models.TextField()
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
 
 
 class IncomeOperation(models.Model):
@@ -36,3 +38,4 @@ class IncomeOperation(models.Model):
     amount = models.FloatField()
     description = models.TextField()
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, null=True)
+    id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)

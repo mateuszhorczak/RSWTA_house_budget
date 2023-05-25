@@ -6,7 +6,8 @@
     <h1>To twoje portfele:</h1>
     <ul>
         {% for wallet in wallets_list %}
-            <li><a href="{% url 'wallet' wallet_name=wallet.name %}">{{ wallet.name }}</a></li>
+            <li><a href="{% url 'wallet' wallet_name=wallet.name %}">{{ wallet.name }}</a> saldo:
+                <b>{{ wallet.account_balance }}</b></li>
 
         {% endfor %}
     </ul>
