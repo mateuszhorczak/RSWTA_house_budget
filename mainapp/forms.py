@@ -89,9 +89,8 @@ class DatabaseRecordForm(forms.Form):
         queryset_income = IncomeOperation.objects.all()
         queryset_expense = ExpanseOperation.objects.all()
         if operation_type == 'expense':
-            print('wydatek')
             if title:
-                queryset_expense = queryset_expense.filter(title_incontains=title)
+                queryset_expense = queryset_expense.filter(title__icontains=title)
             if description:
                 queryset_expense = queryset_expense.filter(description__icontains=description)
             if amount:
@@ -103,18 +102,13 @@ class DatabaseRecordForm(forms.Form):
             return queryset_expense, []
 
         elif operation_type == 'income':
-            print('przychod')
             if title:
-                print('wszedlem w tytul przychodu')
                 queryset_income = queryset_income.filter(title__icontains=title)
             if description:
-                print('wszedlem w opis przychodu')
                 queryset_income = queryset_income.filter(description__icontains=description)
             if amount:
-                print('wszedlem w kwote przychodu')
                 queryset_income = queryset_income.filter(amount=amount)
             if wallets:
-                print('wszedlem w portfele przychodu')
                 queryset_income = queryset_income.filter(wallet__pk=wallets.pk)
             return [], queryset_income
 
