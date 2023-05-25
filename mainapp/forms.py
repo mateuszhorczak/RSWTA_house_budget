@@ -78,7 +78,7 @@ class DatabaseRecordForm(forms.Form):
         self.fields['categories'].queryset = Category.objects.filter(id_user=user)
         self.fields['wallets'].queryset = Wallet.objects.filter(id_user=user)
 
-    def search(self):
+    def search(self, user):
         operation_type = self.cleaned_data['operation_type']
         categories = self.cleaned_data['categories']
         wallets = self.cleaned_data['wallets']
@@ -86,8 +86,8 @@ class DatabaseRecordForm(forms.Form):
         amount = self.cleaned_data['amount']
         description = self.cleaned_data['description']
 
-        queryset_income = IncomeOperation.objects.all()
-        queryset_expense = ExpanseOperation.objects.all()
+        queryset_income = IncomeOperation.objects.all().filter(id_user=user)
+        queryset_expense = ExpanseOperation.objects.all().filter(id_user=user)
         if operation_type == 'expense':
             if title:
                 queryset_expense = queryset_expense.filter(title__icontains=title)

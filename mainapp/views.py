@@ -19,7 +19,7 @@ def home_view(request):
     if request.method == 'POST':
         form_database_record = DatabaseRecordForm(request.POST, user=request.user)
         if form_database_record.is_valid():
-            expense_operations, income_operations = form_database_record.search()
+            expense_operations, income_operations = form_database_record.search(request.user)
             operations = list(expense_operations) + list(income_operations)
             context = {'username': username, 'form_database_record': form_database_record, 'operations': operations}
             return render(request, 'home.html', context)
@@ -66,18 +66,21 @@ def wallet_view(request, wallet_name):
                 description=description,
                 amount=amount,
                 wallet=wallet,
-                category=category
+                category=category,
+                id_user=request.user
             )
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
         if form_incomes.is_valid():
             title = form_incomes.cleaned_data['title']
             amount = form_incomes.cleaned_data['amount']
             description = form_incomes.cleaned_data['description']
+
             income_operation = IncomeOperation.objects.create(
                 title=title,
                 description=description,
                 amount=amount,
                 wallet=wallet,
+                id_user=request.user,
             )
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
     else:
@@ -103,22 +106,6 @@ def categories_view(request):
     categories_list = Category.objects.filter(id_user=request.user)
     context = {'categories_list': categories_list, 'form_category': form_category}
     return render(request, 'categories.html', context)
-
-
-@login_required()
-def category_view(request, category_name):
-    category = get_object_or_404(Category, name=category_name)
-    categories_list = Category.objects.filter(name=category_name)
-    context = {'category_name': category_name, 'wallets_list': categories_list}
-    return render(request, 'category.html', context)
-
-
-@login_required()
-def category_view(request, category_name):
-    category = get_object_or_404(Category, name=category_name)
-    categories_list = Category.objects.filter(name=category_name)
-    context = {'category_name': category_name, 'wallets_list': categories_list}
-    return render(request, 'category.html', context)
 
 
 @login_required(login_url='home')
