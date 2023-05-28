@@ -7,6 +7,18 @@ from django.contrib.admin.forms import AdminAuthenticationForm
 from . import models
 
 
+class WalletAdmin(admin.ModelAdmin):
+    list_display = ('name', 'account_balance')
+
+
+class IncomeOperationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'amount', 'description')
+    
+    
+class ExpenseOperationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'amount', 'description')
+
+
 class CustomAuthenticationForm(AdminAuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,6 +39,6 @@ admin_site = CustomAdminSite(name='admin')
 admin.site = admin_site
 
 admin.site.register(models.Category)
-admin.site.register(models.IncomeOperation)
-admin.site.register(models.Wallet)
-admin.site.register(models.ExpanseOperation)
+admin.site.register(models.IncomeOperation, IncomeOperationAdmin)
+admin.site.register(models.Wallet, WalletAdmin)
+admin.site.register(models.ExpanseOperation, ExpenseOperationAdmin)
