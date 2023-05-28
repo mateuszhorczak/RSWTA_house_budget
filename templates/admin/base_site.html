@@ -8,9 +8,7 @@
     <h1 id="site-name" style="font-size: 36px;"><a
             href="{% url 'admin:index' %}"><b>{{ site_header|default:_('Django administration') }}</b></a></h1>
 
-    {% if user.is_anonymous %}
-        {% include "admin/color_theme_toggle.html" %}
-    {% endif %}
+
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
