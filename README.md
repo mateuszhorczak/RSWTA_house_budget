@@ -9,10 +9,10 @@ projekt dla grupy maksymalnie 3-osobowej.
 
 # How to run it?
 -----------
-clone repo `git clone git@github.com:mateuszhorczak/RSWTA_house_budget.git`
-run `docker compose up`
-build `docker-compose up --build`
-check your container-id `docker ps`
-run bash `docker exec -it [container-id] bash`
-make migration `python manage.py makemigrations`
-do migrate `python manage.py migrate`
+- clone repo `git clone git@github.com:mateuszhorczak/RSWTA_house_budget.git`
+- run `docker compose up`
+- build `docker-compose up --build`
+- check your container-id `docker ps`
+- run bash `docker exec -it [container-id] bash`
+- make migration `python manage.py makemigrations`
+- do migrate `python manage.py migrate`
