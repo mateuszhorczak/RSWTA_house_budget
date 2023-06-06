@@ -29,7 +29,10 @@
                 <button type="submit">Wyślij</button>
             </form>
         </div>
-
     </ul>
+    <div>
+        <img src="{% url 'plot_view_expanse' wallet_id %}" alt="Wykres 1">
+        {{ wallet_id }}
+    </div>
 
 {% endblock %}
