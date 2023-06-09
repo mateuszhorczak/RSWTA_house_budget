@@ -1,16 +1,60 @@
-from django.contrib import messages
+import io
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
-from django.db.models import Q
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.urls import reverse
-
+import matplotlib.pyplot as plt
+import numpy as np
 # Create your views here.
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
 from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm, DatabaseRecordForm
+
+@login_required()
+def plot_view_expanse(request, pk):
+    fig, axs = plt.subplots(2, figsize=(6, 10))
+    expenses = ExpanseOperation.objects.filter(wallet__pk=pk)
+    incomes = IncomeOperation.objects.filter(wallet__pk=pk)
+
+    y1 = []
+    y2 = []
+
+    for expense in expenses:
+        y1.append(expense.amount)
+    for income in incomes:
+        y2.append(income.amount)
+
+    x1= np.arange(1,len(y1) + 1)
+    x2= np.arange(1,len(y2) + 1)
+
+    axs[0].stem(x1, y1)
+    axs[1].stem(x2, y2)
+    axs[0].grid()
+    axs[1].grid()
+    axs[0].set_ylim(0-max(y1)/10, max(y1) + max(y1)/10)
+    axs[1].set_ylim(0-max(y2)/10, max(y2) + max(y2)/10)
+    axs[0].set_xlabel('Numer operacji')
+    axs[1].set_xlabel('Numer operacji')
+    axs[0].set_ylabel('Kwota')
+    axs[1].set_ylabel('Kwota')
+    axs[0].set_xticks(range(min(x1), max(x1) + 1, 1))
+    axs[1].set_xticks(range(min(x2), max(x2) + 1, 1))
+    for i in range(len(x1)):
+        axs[0].annotate(str(y1[i]), xy=(x1[i], y1[i]), xytext=(x1[i], y1[i] + 2), ha='center')
+    for i in range(len(x2)):
+        axs[1].annotate(str(y2[i]), xy=(x2[i], y2[i]), xytext=(x2[i], y2[i] + 2), ha='center')
+    axs[0].set_title('Wydatki')
+    axs[1].set_title('Przychody')
+
+    response1 = HttpResponse(content_type='image/png')
+
+    fig.savefig(response1, format='png')
+
+    return response1
 
 
 @login_required()
@@ -93,7 +137,8 @@ def wallet_view(request, wallet_name):
         form_incomes = IncomesForm()
 
     context = {'wallet_name': wallet_name, 'categories_list': categories_list, 'form_expanses': form_expanses,
-               'form_incomes': form_incomes, 'account_balance': wallet.account_balance}
+               'form_incomes': form_incomes, 'account_balance': wallet.account_balance,
+               'wallet_id': wallet.pk}
     return render(request, 'wallet.html', context)
 
 

@@ -18,8 +18,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 
-from mainapp.views import registration_view
-
+from mainapp.views import registration_view, plot_view_expanse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +29,5 @@ urlpatterns = [
     path("accounts/register/", registration_view, name='registration'),
     path('mainapp/', include('mainapp.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('plot_view_expanse/<pk>', plot_view_expanse, name='plot_view_expanse')
 ]
