@@ -137,10 +137,13 @@ class DatabaseRecordForm(forms.Form):
 
 
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(label='email', max_length=100, widget=forms.EmailInput)
-    username = forms.CharField(help_text='')
-    password1 = forms.CharField(help_text='', widget=forms.PasswordInput(attrs={'type': 'password'}))
-    password2 = forms.CharField(help_text='', widget=forms.PasswordInput(attrs={'type': 'password'}))
+    email = forms.EmailField(label='email', max_length=100,
+                             widget=forms.EmailInput(attrs={'placeholder': 'adres email'}))
+    username = forms.CharField(help_text='', widget=forms.TextInput(attrs={'placeholder': 'nazwa użytkownika'}))
+    password1 = forms.CharField(help_text='',
+                                widget=forms.PasswordInput(attrs={'type': 'password', 'placeholder': 'hasło'}))
+    password2 = forms.CharField(help_text='',
+                                widget=forms.PasswordInput(attrs={'type': 'password', 'placeholder': 'powtórz hasło'}))
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -151,3 +154,4 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+

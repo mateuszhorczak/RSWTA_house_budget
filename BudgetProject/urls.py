@@ -22,6 +22,7 @@ from mainapp.views import registration_view, plot_view_expanse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('__reload__/', include('django_browser_reload.urls')),
     path('', RedirectView.as_view(url='accounts/login/')),
 
     re_path(r'^favicon\.ico$', RedirectView.as_view(url='mainapp/home')),
