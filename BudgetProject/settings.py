@@ -32,16 +32,13 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'mainapp',
-    'tailwind',
-    'theme',
-    'django_browser_reload',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mainapp',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +49,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'BudgetProject.urls'
@@ -125,7 +121,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-TAILWIND_APP_NAME = 'theme'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 

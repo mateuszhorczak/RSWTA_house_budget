@@ -1,10 +1,9 @@
-{% load static tailwind_tags %}
-
+{% load static %}
 <html lang="pl">
 <head>
     <title>{% block title %}{% endblock %}</title>
-    {% tailwind_css %}
     {#    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">#}
+    <script src="https://cdn.tailwindcss.com"></script>
     {% block head %}{% endblock %}
 </head>
 <body class="bg-indigo-500">
