@@ -1,21 +1,21 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db.models import Q
 
 from .models import IncomeOperation, Wallet, Category, ExpanseOperation
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 
 
 class ExpansesForm(forms.Form):
+    style = 'w-full p-2 mb-2 border-2 border-black'
     title = forms.CharField(label='Tytul operacji', max_length=100,
-                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
+                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul', 'class': style}))
     amount = forms.DecimalField(label='Kwota', decimal_places=2,
-                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
+                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote', 'class': style}))
     description = forms.CharField(label='Opis', max_length=100,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
+                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis', 'class': style}))
     category = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.none(),
-                                      widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię', }),
+                                      widget=forms.Select(attrs={'placeholder': 'Wybierz kategorię', 'class': style, }),
                                       to_field_name='name')
 
     def __init__(self, *args, user=None, wallet=None, **kwargs):
@@ -24,19 +24,23 @@ class ExpansesForm(forms.Form):
 
 
 class IncomesForm(forms.Form):
+    style = 'w-full p-2 mb-2 border-2 border-black'
     title = forms.CharField(label='Tytul operacji', max_length=100,
-                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul'}))
+                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadz tytul', 'class': style}))
     amount = forms.DecimalField(label='Kwota', decimal_places=2,
-                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote'}))
+                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadz kwote', 'class': style}))
     description = forms.CharField(label='Opis', max_length=100,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis'}))
+                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadz opis', 'class': style}))
 
 
 class WalletForm(forms.ModelForm):
     name = forms.CharField(label='Nazwa portfela', max_length=100,
-                           widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe portfela'}))
-    categories = forms.ModelMultipleChoiceField(label='Kategoria', queryset=Category.objects.none(),
-                                                widget=forms.SelectMultiple(attrs={'placeholder': 'Wybierz kategorie'}),
+                           widget=forms.TextInput(
+                               attrs={'placeholder': 'Wprowadz nazwe portfela',
+                                      'class': 'border-black border-2 mb-2 p-2 w-full'}))
+    categories = forms.ModelMultipleChoiceField(label='Kategorie', queryset=Category.objects.none(),
+                                                widget=forms.SelectMultiple(
+                                                    attrs={'class': 'border-black border-2 mb-2 w-full'}),
                                                 to_field_name='name')
 
     def __init__(self, *args, user=None, **kwargs):
@@ -50,7 +54,8 @@ class WalletForm(forms.ModelForm):
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(label='Nazwa kategorii', max_length=100,
-                           widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe kategorii'}))
+                           widget=forms.TextInput(attrs={'placeholder': 'Wprowadz nazwe kategorii',
+                                                         'class': 'w-full p-2 mb-2 border-2 border-black'}))
 
     class Meta:
         model = Category
@@ -58,20 +63,27 @@ class CategoryForm(forms.ModelForm):
 
 
 class DatabaseRecordForm(forms.Form):
+    style = 'w-full p-2 mb-2 border-2 border-black'
+
     title = forms.CharField(label='Tytuł operacji', max_length=100,
-                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadź tytuł'}), required=False)
+                            widget=forms.TextInput(attrs={'placeholder': 'Wprowadź tytuł', 'class': style}),
+                            required=False)
     amount = forms.DecimalField(label='Kwota', decimal_places=2,
-                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadź kwotę'}), required=False)
+                                widget=forms.TextInput(attrs={'placeholder': 'Wprowadź kwotę', 'class': style}),
+                                required=False)
     description = forms.CharField(label='Opis', max_length=100,
-                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadź opis'}), required=False)
+                                  widget=forms.TextInput(attrs={'placeholder': 'Wprowadź opis', 'class': style}),
+                                  required=False)
     categories = forms.ModelChoiceField(label='Kategoria', queryset=Category.objects.none(),
-                                        widget=forms.Select(attrs={'placeholder': 'Wybierz kategorie'}),
+                                        widget=forms.Select(
+                                            attrs={'placeholder': 'Wybierz kategorie', 'class': style}),
                                         to_field_name='name', required=False)
     wallets = forms.ModelChoiceField(label='Portfel', queryset=Wallet.objects.none(),
-                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel'}),
+                                     widget=forms.Select(attrs={'placeholder': 'Wybierz portfel', 'class': style}),
                                      to_field_name='name', required=False)
     operation_type = forms.ChoiceField(label='Typ operacji', choices=[('expense', 'Wydatek'), ('income', 'Dochód'),
-                                                                      ('both', 'Oba')])
+                                                                      ('both', 'Oba')],
+                                       widget=forms.Select(attrs={'class': style}))
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -137,13 +149,17 @@ class DatabaseRecordForm(forms.Form):
 
 
 class UserRegistrationForm(UserCreationForm):
+    style = 'w-full p-2 mb-2 ml-2 border-2 border-black'
     email = forms.EmailField(label='email', max_length=100,
-                             widget=forms.EmailInput(attrs={'placeholder': 'adres email'}))
-    username = forms.CharField(help_text='', widget=forms.TextInput(attrs={'placeholder': 'nazwa użytkownika'}))
+                             widget=forms.EmailInput(attrs={'placeholder': 'Adres email', 'class': style}))
+    username = forms.CharField(help_text='',
+                               widget=forms.TextInput(attrs={'placeholder': 'Nazwa użytkownika', 'class': style}))
     password1 = forms.CharField(help_text='',
-                                widget=forms.PasswordInput(attrs={'type': 'password', 'placeholder': 'hasło'}))
+                                widget=forms.PasswordInput(
+                                    attrs={'type': 'password', 'placeholder': 'Hasło', 'class': style}))
     password2 = forms.CharField(help_text='',
-                                widget=forms.PasswordInput(attrs={'type': 'password', 'placeholder': 'powtórz hasło'}))
+                                widget=forms.PasswordInput(
+                                    attrs={'type': 'password', 'placeholder': 'Powtórz hasło', 'class': style}))
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -155,3 +171,19 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        style = 'w-full p-2 mb-2 ml-2 border-black border-2'
+        self.fields['username'].widget.attrs['placeholder'] = 'Nazwa użytkownika'
+        self.fields['username'].widget.attrs['class'] = style
+        self.fields['password'].widget.attrs['placeholder'] = 'Hasło'
+        self.fields['password'].widget.attrs['class'] = style
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['placeholder'] = 'Adres email'
+        self.fields['email'].widget.attrs['class'] = 'w-full p-2 ml-2 border-black border-2'

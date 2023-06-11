@@ -4,22 +4,26 @@
 {% block title %}Rejestracja{% endblock %}
 
 {% block content %}
-    {% if form.errors %}
-        <p>Blad podczas tworenia konta</p>
-    {% endif %}
+    <div class="flex align-top justify-center mt-2">
+        <div class="flex-none">
+            {% if form.errors %}
+                <p class="font-bold">Blad podczas tworenia konta</p>
+            {% endif %}
 
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore ma
-                ten dostep.</p>
-        {% else %}
-            <p>Zaloguj sie by zobaczyc ta strone!</p>
-        {% endif %}
-    {% endif %}
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <p class="font-bold">Twoje konto nie ma dostepu do tej strony. Mozesz sie zalogowac na konto ktore
+                        ma ten dostep.</p>
+                {% else %}
+                    <p class="font-bold">Zaloguj sie by zobaczyc ta strone!</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 
 
     <div class="flex justify-center align-middle mt-10">
-        <div class="bg-gray-400 flex align-middle p-10 justify-center w-1/4 rounded-3xl">
+        <div class="bg-white shadow-md focus-within:shadow-xl duration-200 flex align-middle p-10 justify-center w-1/4 rounded-3xl">
             <div>
                 <div class="flex align-top justify-center mb-5">
                     <h2 class="font-bold text-2xl ">Stwórz konto!</h2>
@@ -28,19 +32,23 @@
                     {% csrf_token %}
                     <table>
                         <tr>
-                            <td><img id="mail-icon" src="{% static 'images/mail-logo.png' %}" alt="mail" class="w-8 h-auto"/></td>
+                            <td><img id="mail-icon" src="{% static 'images/mail-logo.png' %}" alt="mail"
+                                     class="w-8 h-auto"/></td>
                             <td>{{ form.email }}</td>
                         </tr>
                         <tr>
-                            <td><img id="username-icon" src="{% static 'images/username-logo.png' %}" alt="username" class="w-8 h-auto"/></td>
+                            <td><img id="username-icon" src="{% static 'images/username-logo.png' %}" alt="username"
+                                     class="w-8 h-auto"/></td>
                             <td>{{ form.username }}</td>
                         </tr>
                         <tr>
-                            <td><img id="password1" src="{% static 'images/password-logo.png' %}" alt="password" class="w-8 h-auto"/></td>
+                            <td><img id="password1" src="{% static 'images/password-logo.png' %}" alt="password"
+                                     class="w-8 h-auto"/></td>
                             <td>{{ form.password1 }}</td>
                         </tr>
                         <tr>
-                            <td><img id="pasword2" src="{% static 'images/password-logo.png' %}" alt="password" class="w-8 h-auto"/></td>
+                            <td><img id="pasword2" src="{% static 'images/password-logo.png' %}" alt="password"
+                                     class="w-8 h-auto"/></td>
                             <td>{{ form.password2 }}</td>
                         </tr>
                     </table>

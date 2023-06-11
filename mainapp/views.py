@@ -1,60 +1,73 @@
-import io
-
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from django.urls import reverse
+from django.shortcuts import render, redirect
 import matplotlib.pyplot as plt
 import numpy as np
+import io
 # Create your views here.
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
-from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm, DatabaseRecordForm
+from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm, DatabaseRecordForm, \
+    CustomAuthenticationForm, CustomPasswordResetForm
+
 
 @login_required()
-def plot_view_expanse(request, pk):
-    fig, axs = plt.subplots(2, figsize=(6, 10))
+def expanse_plot_view(request, pk):
+    fig, ax = plt.subplots(figsize=(12, 6))
     expenses = ExpanseOperation.objects.filter(wallet__pk=pk)
-    incomes = IncomeOperation.objects.filter(wallet__pk=pk)
-
-    y1 = []
-    y2 = []
+    y = []
 
     for expense in expenses:
-        y1.append(expense.amount)
+        y.append(expense.amount)
+    x = np.arange(1, len(y) + 1)
+
+    ax.stem(x, y)
+    ax.grid()
+    ax.set_ylim(0 - max(y) / 10, max(y) + max(y) / 10)
+    ax.set_xlabel('Numer operacji')
+    ax.set_ylabel('Kwota')
+    ax.set_xticks(range(min(x), max(x) + 1, 1))
+    for i in range(len(x)):
+        ax.annotate(str(y[i]), xy=(x[i], y[i]), xytext=(x[i], y[i] + 2), ha='center')
+
+    ax.set_title('Wydatki')
+
+    buffer = io.BytesIO()
+    fig.savefig(buffer, format='png')
+    response = HttpResponse(content_type='image/png')
+
+    fig.savefig(response, format='png')
+
+    return response
+
+
+@login_required()
+def income_plot_view(request, pk):
+    fig, ax = plt.subplots(figsize=(12, 6))
+    incomes = IncomeOperation.objects.filter(wallet__pk=pk)
+    y = []
     for income in incomes:
-        y2.append(income.amount)
+        y.append(income.amount)
 
-    x1= np.arange(1,len(y1) + 1)
-    x2= np.arange(1,len(y2) + 1)
+    x = np.arange(1, len(y) + 1)
 
-    axs[0].stem(x1, y1)
-    axs[1].stem(x2, y2)
-    axs[0].grid()
-    axs[1].grid()
-    axs[0].set_ylim(0-max(y1)/10, max(y1) + max(y1)/10)
-    axs[1].set_ylim(0-max(y2)/10, max(y2) + max(y2)/10)
-    axs[0].set_xlabel('Numer operacji')
-    axs[1].set_xlabel('Numer operacji')
-    axs[0].set_ylabel('Kwota')
-    axs[1].set_ylabel('Kwota')
-    axs[0].set_xticks(range(min(x1), max(x1) + 1, 1))
-    axs[1].set_xticks(range(min(x2), max(x2) + 1, 1))
-    for i in range(len(x1)):
-        axs[0].annotate(str(y1[i]), xy=(x1[i], y1[i]), xytext=(x1[i], y1[i] + 2), ha='center')
-    for i in range(len(x2)):
-        axs[1].annotate(str(y2[i]), xy=(x2[i], y2[i]), xytext=(x2[i], y2[i] + 2), ha='center')
-    axs[0].set_title('Wydatki')
-    axs[1].set_title('Przychody')
+    ax.stem(x, y)
+    ax.grid()
+    ax.set_ylim(0 - max(y) / 10, max(y) + max(y) / 10)
+    ax.set_xlabel('Numer operacji')
+    ax.set_ylabel('Kwota')
+    ax.set_xticks(range(min(x), max(x) + 1, 1))
+    for i in range(len(x)):
+        ax.annotate(str(y[i]), xy=(x[i], y[i]), xytext=(x[i], y[i] + 2), ha='center')
+    ax.set_title('Przychody')
 
-    response1 = HttpResponse(content_type='image/png')
+    response = HttpResponse(content_type='image/png')
 
-    fig.savefig(response1, format='png')
+    fig.savefig(response, format='png')
 
-    return response1
+    return response
 
 
 @login_required()
@@ -114,7 +127,7 @@ def wallet_view(request, wallet_name):
                 category=category,
                 id_user=request.user
             )
-            wallet.account_balance -= float(amount)
+            wallet.account_balance -= amount
             wallet.save()
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
         if form_incomes.is_valid():
@@ -129,7 +142,7 @@ def wallet_view(request, wallet_name):
                 wallet=wallet,
                 id_user=request.user,
             )
-            wallet.account_balance += float(amount)
+            wallet.account_balance += amount
             wallet.save()
             return HttpResponseRedirect(f"/mainapp/wallets/{wallet.name}")
     else:
@@ -158,44 +171,22 @@ def categories_view(request):
     return render(request, 'categories.html', context)
 
 
-@login_required(login_url='home')
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('mainapp:home_view'))
-    return render(request, 'registration/login.html')
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
 
 
-@login_required()
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('mainapp:login_view'))
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
 
 
-@login_required(login_url='home')
-def password_reset_view(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('password_change_done')
-    else:
-        form = PasswordChangeForm(user=request.user)
-        return render(request, 'registration/password_reset_form.html', {'form': form})
-
-
-# @login_required(login_url='home')
 def registration_view(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return HttpResponseRedirect('/accounts/login')
+        else:
+            return HttpResponseRedirect('/accounts/register')
     else:
         form = UserRegistrationForm()
         context = {'form': form}

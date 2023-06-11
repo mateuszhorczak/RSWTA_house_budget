@@ -3,13 +3,14 @@
 {% block title %}Strona glowna{% endblock %}
 
 {% block content %}
-    <h1 class="font-bold text-2xl">Witaj <b><i>{{ username }}</i></b> na stronie glownej!</h1>
+    <div class="flex align-top justify-center mt-2">
+        <h1 class="font-bold text-2xl">Witaj <b><i>{{ username }}</i></b> na stronie glownej!</h1>
+    </div>
 
     <div class="flex justify-center align-middle mt-10">
 
-        <div class="bg-gray-400 flex align-middle p-10 justify-center w-1/4 rounded-3xl">
+        <div class="bg-white shadow-md focus-within:shadow-xl duration-200 flex align-middle p-10 justify-center w-1/2 rounded-3xl">
             <div>
-
                 <div class="flex align-top justify-center mb-5">
                     <h2 class="font-bold text-2xl ">Wyszukaj swoje operacje</h2>
                 </div>
@@ -20,18 +21,19 @@
                         <input type="submit" value="Wyszukaj" class="bg-black text-white h-16 w-24 p-2 rounded-xl">
                     </div>
                 </form>
+            </div>
 
-
-                <div class="operations">
-                    <h2>Znalezione operacje:</h2>
-                    <ul>
-                        {% for operation in operations %}
-                            <li>{{ operation.title }} - {{ operation.amount }}</li>
-                        {% empty %}
-                            <li>Brak znalezionych operacji</li>
-                        {% endfor %}
-                    </ul>
+            <div class="ml-auto">
+                <div class="flex align-top justify-center mb-5">
+                    <h2 class="font-bold text-2xl ">Znalezione Operacje</h2>
                 </div>
+                <ul class="text-xl">
+                    {% for operation in operations %}
+                        <li>{{ operation.title }} - {{ operation.amount }} zł</li>
+                    {% empty %}
+                        <li>Brak znalezionych operacji</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
