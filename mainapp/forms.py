@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from .models import IncomeOperation, Wallet, Category, ExpanseOperation
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 
 
 class ExpansesForm(forms.Form):
@@ -187,3 +187,14 @@ class CustomPasswordResetForm(PasswordResetForm):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['placeholder'] = 'Adres email'
         self.fields['email'].widget.attrs['class'] = 'w-full p-2 ml-2 border-black border-2'
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        style = 'w-full p-2 ml-2 border-black border-2'
+        self.fields['new_password1'].widget.attrs['placeholder'] = 'Hasło'
+        self.fields['new_password1'].widget.attrs['class'] = style
+        self.fields['new_password2'].widget.attrs['placeholder'] = 'Powtórz hasło'
+        self.fields['new_password2'].widget.attrs['class'] = style
+    
