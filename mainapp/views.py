@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, PasswordResetView
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -10,7 +12,7 @@ import io
 
 from .models import Category, IncomeOperation, ExpanseOperation, Wallet
 from .forms import ExpansesForm, IncomesForm, UserRegistrationForm, WalletForm, CategoryForm, DatabaseRecordForm, \
-    CustomAuthenticationForm, CustomPasswordResetForm
+    CustomAuthenticationForm, CustomPasswordResetForm, CustomSetPasswordForm
 
 
 @login_required()
@@ -191,3 +193,16 @@ def registration_view(request):
         form = UserRegistrationForm()
         context = {'form': form}
         return render(request, 'registration/registration_form.html', context)
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = CustomSetPasswordForm
+    template_name = 'registration/password_reset_confirm.html'
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'
