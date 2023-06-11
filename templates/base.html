@@ -1,25 +1,40 @@
 {% load static %}
-
-<html lang="en">
+<html lang="pl">
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">#}
+    <script src="https://cdn.tailwindcss.com"></script>
     {% block head %}{% endblock %}
 </head>
-<body>
-<header>
-    <nav>
-        <h2>Twoj budzet</h2>
-        <ul id="menu">
-            <li><a href="{% url 'wallets' %}">Portfele</a></li>
-            <li><a href="{% url 'categories' %}">Kategorie</a></li>
-            <li><a href="{% url 'home' %}"><img id="home-logo" src="{% static 'images/home-logo.png' %}"
-                                                alt="Home page"></a></li>
-            <li><a href="{% url 'logout' %}"><img id="logout-logo" src="{% static 'images/logout-logo.png' %}"
-                                                  alt="Log Out"></a></li>
-        </ul>
-    </nav>
+<body class="bg-blue-50">
+<header class="bg-teal-400 flex justify-between items-center p-4 shadow sticky top-0">
+    <div class="container mx-auto flex items-center">
+        <h2 class="text-4xl mr-auto font-mono"><i>Twój budżet</i></h2>
+        <nav class="flex justify-end w-90 mr-5">
+            <ul id="menu" class="list-none flex m-0 p-0 items-center">
+                <li class="m-0 mx-3 text-2xl hover:opacity-50 hover:transition-all">
+                    <a href="{% url 'wallets' %}">Portfele</a>
+                </li>
+                <li class="m-0 mx-3 text-2xl hover:opacity-50 hover:transition-all">
+                    <a href="{% url 'categories' %}">Kategorie</a>
+                </li>
+                <li class="m-0 mx-3 hover:opacity-50 hover:transition-all">
+                    <a href="{% url 'home' %}">
+                        <img id="home-logo" src="{% static 'images/home-logo.png' %}" alt="Home page"
+                             class="w-14 h-auto">
+                    </a>
+                </li>
+                <li class="m-0 mx-3 hover:transition-all hover:opacity-50">
+                    <a href="{% url 'logout' %}">
+                        <img id="logout-logo" src="{% static 'images/logout-logo.png' %}" alt="Log Out"
+                             class="w-14 h-auto">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
+
 <main>
     {% block content %}{% endblock %}
 </main>

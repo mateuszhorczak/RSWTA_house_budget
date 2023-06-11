@@ -24,19 +24,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'mainapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mainapp',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +68,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 
 WSGI_APPLICATION = 'BudgetProject.wsgi.application'
@@ -122,6 +123,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

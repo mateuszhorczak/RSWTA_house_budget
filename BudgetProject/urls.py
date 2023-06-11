@@ -18,16 +18,18 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 
-from mainapp.views import registration_view, plot_view_expanse
+from mainapp.views import registration_view, expanse_plot_view, CustomLoginView, CustomPasswordResetView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('__reload__/', include('django_browser_reload.urls')),
     path('', RedirectView.as_view(url='accounts/login/')),
 
     re_path(r'^favicon\.ico$', RedirectView.as_view(url='mainapp/home')),
     # nie wiem po co to, ale nie krzyczy przegladarka
     path("accounts/register/", registration_view, name='registration'),
+    path("accounts/login/", CustomLoginView.as_view(), name='login'),
+    path("accounts/password_reset/", CustomPasswordResetView.as_view(), name='password_reset'),
     path('mainapp/', include('mainapp.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('plot_view_expanse/<pk>', plot_view_expanse, name='plot_view_expanse')
 ]

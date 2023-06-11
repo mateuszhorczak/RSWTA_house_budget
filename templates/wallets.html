@@ -3,23 +3,33 @@
 {% block title %}Portfele{% endblock %}
 
 {% block content %}
-    <h1>To twoje portfele:</h1>
-    <ul>
-        {% for wallet in wallets_list %}
-            <li><a href="{% url 'wallet' wallet_name=wallet.name %}">{{ wallet.name }}</a> saldo:
-                <b>{{ wallet.account_balance }}</b></li>
+    <div class="flex justify-center align-middle mt-10">
 
-        {% endfor %}
-    </ul>
-
-    <div class="forms">
-        <p>Dodaj nowy portfel</p>
-        <form action="{% url 'wallets' %}" method="POST" id="wallets">
-            {% csrf_token %}
-            {{ form_wallet.as_p }}
-            <button type="submit">Wyślij</button>
-        </form>
+        <div class="bg-white shadow-md focus-within:shadow-xl duration-200 flex align-middle p-10 justify-center w-1/2 rounded-3xl">
+            <div>
+                <div class="flex align-top justify-center mb-5">
+                    <h2 class="font-bold text-2xl">Dodaj nowy portfel</h2>
+                </div>
+                <form action="{% url 'wallets' %}" method="POST" id="wallets">
+                    {% csrf_token %}
+                    {{ form_wallet.as_p }}
+                    <div class="flex align-top justify-center mt-2">
+                        <input type="submit" value="Stwórz" class="bg-black text-white h-16 w-24 p-2 rounded-xl">
+                    </div>
+                </form>
+            </div>
+            <div class="ml-auto">
+                <div class="flex align-top justify-center mb-5">
+                    <h2 class="font-bold text-2xl">Twoje portfele</h2>
+                </div>
+                <ul class="text-xl">
+                    {% for wallet in wallets_list %}
+                        <li><a href="{% url 'wallet' wallet_name=wallet.name %}"><h1
+                                class="font-bold mt-2 text-gray-400">{{ wallet.name }}</h1></a> saldo:
+                            <b>{{ wallet.account_balance }} zł</b></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
-
-
 {% endblock %}

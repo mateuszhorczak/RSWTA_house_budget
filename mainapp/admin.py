@@ -19,7 +19,7 @@ class ExpenseOperationAdmin(admin.ModelAdmin):
     list_display = ('title', 'amount', 'description')
 
 
-class CustomAuthenticationForm(AdminAuthenticationForm):
+class CustomAdminAuthenticationForm(AdminAuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = 'Nazwa administratora'
@@ -29,7 +29,7 @@ class CustomAuthenticationForm(AdminAuthenticationForm):
 
 
 class CustomAdminSite(AdminSite):
-    login_form = CustomAuthenticationForm
+    login_form = CustomAdminAuthenticationForm
     site_title = 'Panel administracyjny'
     site_header = 'Panel administracyjny'
     site_url = '/mainapp/home'
