@@ -84,6 +84,12 @@ class DatabaseRecordForm(forms.Form):
     operation_type = forms.ChoiceField(label='Typ operacji', choices=[('expense', 'Wydatek'), ('income', 'Dochód'),
                                                                       ('both', 'Oba')],
                                        widget=forms.Select(attrs={'class': style}))
+    first_date = forms.DateField(label='Data poczatkowa',
+                                 widget=forms.SelectDateWidget(attrs={'class': style}, years=range(2000, 2030),
+                                                               empty_label=None), required=False, initial=None)
+    last_date = forms.DateField(label='Data koncowa',
+                                widget=forms.SelectDateWidget(attrs={'class': style}, years=range(2000, 2030),
+                                                              empty_label=None), required=False, initial=None)
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -97,6 +103,8 @@ class DatabaseRecordForm(forms.Form):
         title = self.cleaned_data['title']
         amount = self.cleaned_data['amount']
         description = self.cleaned_data['description']
+        first_date = self.cleaned_data['first_date']
+        last_date = self.cleaned_data['last_date']
 
         queryset_income = IncomeOperation.objects.all().filter(id_user=user)
         queryset_expense = ExpanseOperation.objects.all().filter(id_user=user)
@@ -111,6 +119,14 @@ class DatabaseRecordForm(forms.Form):
                 queryset_expense = queryset_expense.filter(category__pk=categories.pk)
             if wallets:
                 queryset_expense = queryset_expense.filter(wallet__pk=wallets.pk)
+            if first_date and last_date:
+                queryset_expense = queryset_expense.filter(operation_date__gte=first_date,
+                                                           operation_date__lte=last_date)
+            if first_date and not last_date:
+                queryset_expense = queryset_expense.filter(operation_date__gte=first_date)
+            if not first_date and last_date:
+                queryset_expense = queryset_expense.filter(operation_date__lte=last_date)
+
             return queryset_expense, []
 
         elif operation_type == 'income':
@@ -122,6 +138,14 @@ class DatabaseRecordForm(forms.Form):
                 queryset_income = queryset_income.filter(amount=amount)
             if wallets:
                 queryset_income = queryset_income.filter(wallet__pk=wallets.pk)
+            if first_date and last_date:
+                queryset_income = queryset_income.filter(operation_date__gte=first_date,
+                                                         operation_date__lte=last_date)
+            if first_date and not last_date:
+                queryset_income = queryset_income.filter(operation_date__gte=first_date)
+            if not first_date and last_date:
+                queryset_income = queryset_income.filter(operation_date__lte=last_date)
+
             return [], queryset_income
 
         elif operation_type == 'both':
@@ -136,6 +160,13 @@ class DatabaseRecordForm(forms.Form):
                 queryset_expense = queryset_expense.filter(category__pk=categories.pk)
             if wallets:
                 queryset_expense = queryset_expense.filter(wallet__pk=wallets.pk)
+            if first_date and last_date:
+                queryset_expense = queryset_expense.filter(operation_date__gte=first_date,
+                                                           operation_date__lte=last_date)
+            if first_date and not last_date:
+                queryset_expense = queryset_expense.filter(operation_date__gte=first_date)
+            if not first_date and last_date:
+                queryset_expense = queryset_expense.filter(operation_date__lte=last_date)
 
             if title:
                 queryset_income = queryset_income.filter(title__icontains=title)
@@ -145,6 +176,14 @@ class DatabaseRecordForm(forms.Form):
                 queryset_income = queryset_income.filter(amount=amount)
             if wallets:
                 queryset_income = queryset_income.filter(wallet__pk=wallets.pk)
+            if first_date and last_date:
+                queryset_income = queryset_income.filter(operation_date__gte=first_date,
+                                                         operation_date__lte=last_date)
+            if first_date and not last_date:
+                queryset_income = queryset_income.filter(operation_date__gte=first_date)
+            if not first_date and last_date:
+                queryset_income = queryset_income.filter(operation_date__lte=last_date)
+
             return queryset_expense, queryset_income
 
 
@@ -197,4 +236,3 @@ class CustomSetPasswordForm(SetPasswordForm):
         self.fields['new_password1'].widget.attrs['class'] = style
         self.fields['new_password2'].widget.attrs['placeholder'] = 'Powtórz hasło'
         self.fields['new_password2'].widget.attrs['class'] = style
-    
