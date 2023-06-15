@@ -48,7 +48,7 @@ class ExpanseOperation(models.Model):
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     id_user = models.ForeignKey(user_model, on_delete=models.CASCADE)
-    operation_date = models.DateTimeField(auto_now=False, auto_now_add=False, default=datetime.today)
+    operation_date = models.DateTimeField(auto_now=False, auto_now_add=False, default=datetime.now)
 
 
 class IncomeOperation(models.Model):
