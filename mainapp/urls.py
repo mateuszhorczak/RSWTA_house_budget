@@ -11,4 +11,5 @@ urlpatterns = [
     path('wallets/<str:wallet_name>/', views.wallet_view, name='wallet'),
     path('plot_view_expanse/<int:pk>', views.expanse_plot_view, name='plot_view_expanse'),
     path('plot_view_income/<int:pk>', views.income_plot_view, name='plot_view_income'),
+    path('plot_view_balance/<int:pk>', views.balance_plot_view, name='plot_view_balance'),
 ]
