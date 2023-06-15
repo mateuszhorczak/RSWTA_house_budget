@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.http import HttpResponseRedirect
@@ -70,6 +69,7 @@ def income_plot_view(request, pk):
     fig.savefig(response, format='png')
 
     return response
+
 
 def balance_plot_view(request, pk):
     fig, ax = plt.subplots(figsize=(12, 6))

@@ -13,8 +13,8 @@ class WalletAdmin(admin.ModelAdmin):
 
 class IncomeOperationAdmin(admin.ModelAdmin):
     list_display = ('title', 'amount', 'description')
-    
-    
+
+
 class ExpenseOperationAdmin(admin.ModelAdmin):
     list_display = ('title', 'amount', 'description')
 
