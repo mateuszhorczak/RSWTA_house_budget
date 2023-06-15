@@ -71,6 +71,44 @@ def income_plot_view(request, pk):
 
     return response
 
+def balance_plot_view(request, pk):
+    fig, ax = plt.subplots(figsize=(12, 6))
+    incomes = IncomeOperation.objects.filter(wallet__pk=pk)
+    expanses = ExpanseOperation.objects.filter(wallet__pk=pk)
+
+    data = {}
+
+    for income in incomes:
+        data[income.operation_date] = income.amount_wallet_after
+
+    for expanse in expanses:
+        data[expanse.operation_date] = expanse.amount_wallet_after
+
+    sorted_keys = sorted(data.keys())
+    print(sorted_keys)
+    new_data = {}
+    for key in sorted_keys:
+        key_start = key
+        key = key.strftime('%y-%m-%d\n%H:%M:%S')
+        new_data[key] = data[key_start]
+
+    keys = list(new_data.keys())
+    values = list(new_data.values())
+
+    ax.stem(keys, values)
+    ax.grid()
+    ax.set_xlabel('Data')
+    ax.set_ylabel('Saldo')
+    for i in range(len(keys)):
+        ax.annotate(str(values[i]), xy=(keys[i], values[i]), xytext=(keys[i], values[i] + 2), ha='center')
+    ax.set_title('Ostatnie Stany Salda Portfela')
+
+    response = HttpResponse(content_type='image/png')
+
+    fig.savefig(response, format='png')
+
+    return response
+
 
 @login_required()
 def home_view(request):
@@ -110,6 +148,7 @@ def wallets_view(request):
 @login_required()
 def wallet_view(request, wallet_name):
     wallet = Wallet.objects.get(name=wallet_name)
+    account_balance = wallet.get_account_balance()
     categories_list = wallet.categories.filter(id_user=request.user)
 
     if request.method == 'POST':
@@ -124,6 +163,7 @@ def wallet_view(request, wallet_name):
                 title=title,
                 description=description,
                 amount=amount,
+                amount_wallet_after=account_balance - amount,
                 wallet=wallet,
                 category=category,
                 id_user=request.user
@@ -139,6 +179,7 @@ def wallet_view(request, wallet_name):
                 title=title,
                 description=description,
                 amount=amount,
+                amount_wallet_after=account_balance + amount,
                 wallet=wallet,
                 id_user=request.user,
             )
